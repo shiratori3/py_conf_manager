@@ -1,0 +1,11 @@
+/.vscode/
+/gitignore/
+*__pycache__/
+*.conf
+*.yaml
+*.log
+*.ipynb_checkpoints/
+*.ipynb
+!template.*
+!template.ipynb
+main_run.py
