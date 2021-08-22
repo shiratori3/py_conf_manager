@@ -3,7 +3,7 @@
 '''
 @File    :   compare.py
 @Author  :   Billy Zhou
-@Time    :   2021/08/20
+@Time    :   2021/08/22
 @Desc    :   None
 '''
 
@@ -18,7 +18,7 @@ log = logger.get_logger(__name__)
 
 import copy
 from collections.abc import Mapping
-from src.basic.input_check import input_checking_YN  # noqa: E402
+from src.basic.input_check import input_checking_YN
 
 
 def dict_compare(

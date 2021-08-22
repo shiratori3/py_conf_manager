@@ -10,6 +10,8 @@
 
 配备配置文件的读写功能，会对路径更改及文件名更改进行检测。
 
+可通过get_cwdPath静态方法返回该文件的前两级目录作为根目录。
+
 可进一步重写run函数以实现程序运行期间的文件管理功能。
 
 - BaseManagerUI
@@ -24,6 +26,6 @@
 
 ## 使用样例
 
-详见bin文件夹下的run.py以及ConfManager文件。
+详见bin文件夹下的 template.py 以及 src\manager\ConfManager.py 文件。
 
-构造conf实例并保存项目根目录至cwdPath全局变量以便项目的其他文件调用，同时可读取conf实例的conf_dict属性获取当前根目录下settings.py的配置内容
+构造conf实例，可读取conf实例的conf_dict属性获取当前根目录下settings.py的配置内容
