@@ -3,20 +3,22 @@
 '''
 @File    :   ConfManager.py
 @Author  :   Billy Zhou
-@Time    :   2021/08/06
-@Version :   1.5.0
+@Time    :   2021/08/20
 @Desc    :   None
 '''
 
 
 import sys
-import logging
 from pathlib import Path
-sys.path.append(str(Path(__file__).parents[2]))
+cwdPath = Path(__file__).parents[2]
+sys.path.append(str(cwdPath))
 
+from src.manager.Logger import logger  # noqa: E402
+log = logger.get_logger(__name__)
+
+from src.manager.BaseFileManager import BaseFileManager  # noqa: E402
 from src.basic.input_check import input_default  # noqa: E402
 from src.basic.input_check import input_checking_YN  # noqa: E402
-from src.manager.BaseManager import BaseFileManager  # noqa: E402
 
 
 class ConfManager(BaseFileManager):
@@ -24,8 +26,7 @@ class ConfManager(BaseFileManager):
     def __init__(self, conf_path=''):
         super().__init__(conf_path=conf_path)
 
-        # Add cwd to conf_dict
-        self.conf_dict['path']['cwd'] = self._cwd
+        log.debug('ConfManager inited')
 
     def add_value(self, session='', option='', value='') -> None:
         self.conf_dict = self.read_conf()
@@ -39,47 +40,27 @@ class ConfManager(BaseFileManager):
         if not self.conf_dict.get(session):
             self.conf_dict[session] = {}
         if self.conf_dict[session].get(option):
-            logging.info('The value of {0}[{1}] already existed. '.format(session, option))
-            logging.info('Existed value: {0}'.format(self.conf_dict[session][option]))
-            logging.info('Inputed value: {0}'.format(value))
+            print('The value of {0}[{1}] already existed. '.format(session, option))
+            print('Existed value: {0}'.format(self.conf_dict[session][option]))
+            print('Inputed value: {0}'.format(value))
             YN = input_checking_YN('Updated existed value with inputed value?')
             if YN == 'Y':
-                logging.info('Updated.')
+                print('Updated.')
                 self.conf_dict[session][option] = value
             else:
-                logging.info('Canceled.')
+                print('Canceled.')
         else:
             self.conf_dict[session][option] = value
 
         self._write_conf()
 
-        # Add cwd to conf_dict
-        self.conf_dict['path']['cwd'] = self._cwd
-
-
-conf = ConfManager()
-cwdPath = conf.conf_dict['path']['cwd']
-logging.info('cwdPath: %s', cwdPath)
 
 if __name__ == '__main__':
-    logging.basicConfig(
-        level=logging.INFO,
-        # filename=os.path.basename(__file__) + '_' + time.strftime('%Y%m%d', time.localtime()) + '.log',
-        # filemode='a',
-        format='%(asctime)s %(name)s %(levelname)s %(message)s',
-        datefmt='%Y-%m-%d %H:%M:%S')
-    logging.debug('start DEBUG')
-    logging.debug('==========================================================')
+    conf = ConfManager()
+    log.info('conf.read_conf(): %s', conf.read_conf())
+    log.info('conf.get_cwdPath(): %s', conf.get_cwdPath())
+    log.info('conf.conf_dict[''path''][''cwd'']: %s', conf.conf_dict['path']['cwd'])
 
-    # conf = ConfManager('d:\\')
-    # cwdPath = conf.conf_dict
-    # logging.info('cwdPath: %s', cwdPath)
-
-    # print(conf.read_conf())
-    # print(conf.conf_dict)
-    # conf.add_value('test', 'name', 'amy')
-    # print(conf.read_conf())
-    # print(conf.conf_dict)
-
-    logging.debug('==========================================================')
-    logging.debug('end DEBUG')
+    conf.add_value('test', 'name', 'amy')
+    log.info('conf.read_conf(): %s', conf.read_conf())
+    log.info('conf.conf_dict: %s', conf.conf_dict)
