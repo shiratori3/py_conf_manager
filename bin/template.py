@@ -10,28 +10,16 @@
 
 
 import sys
-import logging
 from pathlib import Path
-sys.path.append(str(Path(__file__).parents[1]))
+cwdPath = Path(__file__).parents[1]
+sys.path.append(str(cwdPath))
 
-
-from src.manager.ConfManager import cwdPath  # noqa: E402
-from src.manager.ConfManager import conf  # noqa: E402
+from src.manager.Logger import logger  # noqa: E402
+log = logger.get_logger(__name__)
 
 
 if __name__ == '__main__':
-    logging.basicConfig(
-        level=logging.INFO,
-        # filename=os.path.basename(__file__) + '_' + time.strftime('%Y%m%d', time.localtime()) + '.log',
-        # filemode='a',
-        format='%(asctime)s %(name)s %(levelname)s %(message)s',
-        datefmt='%Y-%m-%d %H:%M:%S')
-    logging.debug('start DEBUG')
-    logging.debug('==========================================================')
-
-    print(cwdPath)
-    print(type(cwdPath))
-    print(conf.conf_dict)
-
-    logging.debug('==========================================================')
-    logging.debug('end DEBUG')
+    from src.manager.ConfManager import ConfManager  # noqa: E402
+    conf = ConfManager()
+    log.info('conf.read_conf(): %s', conf.read_conf())
+    log.info('conf.get_cwdPath(): %s', conf.get_cwdPath())
